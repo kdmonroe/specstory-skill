@@ -1,0 +1,19 @@
+{
+  "name": "specstory-skill",
+  "version": "3.0.0",
+  "description": "Search, browse, digest, and recap your AI coding sessions across tools. Local-first on .specstory/history; optional SpecStory Cloud. Packaged as a portable Agent Skill + Claude Code plugin.",
+  "type": "module",
+  "license": "Apache-2.0",
+  "author": "kdmonroe",
+  "homepage": "https://github.com/kdmonroe/specstory-skill",
+  "repository": { "type": "git", "url": "https://github.com/kdmonroe/specstory-skill.git" },
+  "engines": { "node": ">=18" },
+  "bin": {
+    "specstory-recap": "skills/specstory/scripts/recap.mjs",
+    "specstory-digest": "skills/specstory/scripts/digest.mjs",
+    "specstory-search": "skills/specstory/scripts/search.mjs",
+    "specstory-sessions": "skills/specstory/scripts/sessions.mjs"
+  },
+  "keywords": ["specstory", "agent-skill", "claude-code", "ai-coding", "sessions", "digest", "recap"],
+  "dependencies": {}
+}

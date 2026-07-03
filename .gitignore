@@ -1,0 +1,10 @@
+# OS / editor
+.DS_Store
+*.swp
+
+# Node
+node_modules/
+npm-debug.log*
+
+# SpecStory's own capture of sessions in THIS repo (not part of the skill)
+.specstory/

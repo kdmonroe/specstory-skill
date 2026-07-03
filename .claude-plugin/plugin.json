@@ -1,0 +1,10 @@
+{
+  "name": "specstory",
+  "description": "Search, browse, digest, and recap your AI coding sessions (Claude Code, Cursor, Codex, …). Local-first on .specstory/history; optional SpecStory Cloud.",
+  "version": "3.0.0",
+  "author": { "name": "kdmonroe" },
+  "homepage": "https://github.com/kdmonroe/specstory-skill",
+  "repository": "https://github.com/kdmonroe/specstory-skill",
+  "license": "Apache-2.0",
+  "keywords": ["specstory", "sessions", "history", "digest", "recap", "ai-coding"]
+}
