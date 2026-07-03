@@ -1,7 +1,7 @@
 {
   "name": "specstory-skill",
-  "version": "3.0.0",
-  "description": "Search, browse, digest, and recap your AI coding sessions across tools. Local-first on .specstory/history; optional SpecStory Cloud. Packaged as a portable Agent Skill + Claude Code plugin.",
+  "version": "3.1.0",
+  "description": "Search, browse, digest, and recap your AI coding sessions across tools, and coach your CS fundamentals from them (dev-foundations). Local-first on .specstory/history; optional SpecStory Cloud. Packaged as portable Agent Skills + Claude Code plugin.",
   "type": "module",
   "license": "Apache-2.0",
   "author": "kdmonroe",

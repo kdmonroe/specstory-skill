@@ -14,11 +14,11 @@ compatibility: >-
   SPECSTORY_API_KEY or an active `specstory login` session.
 metadata:
   homepage: "https://specstory.com"
-  version: "3.0.0"
+  version: "3.1.0"
   source: "https://github.com/kdmonroe/specstory-skill"
   # Advisory hints for agent runtimes that read namespaced metadata (OpenClaw/Hermes):
   openclaw: '{"primaryEnv":"SPECSTORY_API_KEY","requires":{"bins":["node"]}}'
-  hermes: '{"tags":["sessions","coaching","activity","cron"],"category":"productivity"}'
+  hermes: '{"tags":["sessions","coaching","activity","cron"],"category":"productivity","pinned":true}'
 allowed-tools: Bash(node:*) Read
 ---
 

@@ -1,9 +1,12 @@
 # specstory-skill — Specification
 
-Single source of truth for what this skill is, how it behaves, and the contracts
-it upholds. Keep this updated alongside code changes. Companion docs:
+Single source of truth for what this repo's skills are, how they behave, and the
+contracts they uphold. Keep this updated alongside code changes. Companion docs:
 [README](README.md) (user-facing), [ARCHITECTURE](skills/specstory/references/ARCHITECTURE.md)
 (file-by-file), [cloud-api](skills/specstory/references/cloud-api.md) (GraphQL).
+
+The repo ships **two skills**: `specstory` (query your session history, §§1–7)
+and `dev-foundations` (weekly CS coaching built on top of it, §12).
 
 ## 1. Purpose
 
@@ -83,13 +86,15 @@ Filenames: `YYYY-MM-DD_HH-MM-SSZ[-<slug>].md`. The owning repo directory
 
 ## 8. Packaging & distribution
 
-- **Agent Skill** at `skills/specstory/` per [agentskills.io](https://agentskills.io/specification):
-  `name` == dir name (`specstory`); `description` ≤ 1024; `license`,
-  `compatibility` set; tool hints under namespaced `metadata.*`. Installable via
+- **Agent Skills** under `skills/<name>/` per [agentskills.io](https://agentskills.io/specification):
+  `name` == dir name; `description` ≤ 1024; `license`, `compatibility` set; tool
+  hints under namespaced `metadata.*`. Installable via
   `npx skills add kdmonroe/specstory-skill` or manual copy into `~/.claude/skills/`.
 - **Claude Code plugin** via `.claude-plugin/plugin.json` +
   `.claude-plugin/marketplace.json`; install with
   `/plugin marketplace add kdmonroe/specstory-skill` then `/plugin install specstory`.
+  The single `specstory` plugin includes **all** skills under `skills/` (Claude
+  Code auto-discovers every `skills/*/SKILL.md` beneath the plugin root).
 - **Cross-tool:** the same SKILL.md is read by Claude Code, Cursor, Codex, and
   OpenClaw/Hermes (the latter via the namespaced metadata hints).
 
@@ -100,16 +105,49 @@ Apache-2.0 — chosen to match SpecStory's official
 and to add an explicit patent grant + NOTICE/contributor framework over the prior
 MIT. Community project; not affiliated with SpecStory.
 
-## 10. Versioning
+## 10. Versioning (two-tier)
 
-Skill `version` lives in `SKILL.md` (`metadata.version`), `plugin.json`,
-`marketplace.json`, and `package.json` — keep them in lockstep. Current: **3.0.0**
-(local-first rewrite; supersedes the cloud-only v1 and the hermes-internal v2).
+- **Repo artifacts move in lockstep:** `package.json`, `plugin.json`,
+  `marketplace.json`, and `skills/specstory/SKILL.md` (`metadata.version`) share
+  one version. Current: **3.1.0** (adds the dev-foundations skill; 3.0.0 was the
+  local-first rewrite superseding the cloud-only v1 and hermes-internal v2).
+- **Each additional skill versions itself** in its own `SKILL.md`
+  `metadata.version` (the `specstory` skill tracks the repo version;
+  `dev-foundations` starts at **1.0.0**).
 
 ## 11. Relationship to hermes-deploy
 
 `hermes-deploy/skills/specstory` was a parallel v2.0 fork (cloud-only, with the
 `_recap.mjs` parser and `introspect.mjs`). This repo is now the canonical source;
-hermes-deploy SHOULD vendor it (submodule / `npx skills add` / sync) rather than
-maintain a copy. Hermes' coaching cron calls `digest.mjs --json --cloud` (the
-container has no local history); hermes-only metadata stays under `metadata.hermes`.
+hermes-deploy vendors both skills (plain copy, upstream SHA recorded in its
+CLAUDE.md) rather than maintaining a fork. Hermes' coaching crons call
+`digest.mjs --json --cloud` (the container has no local history); hermes-only
+metadata stays under `metadata.hermes`. The weekly `📚 CS Foundations Weekly`
+cron (Sun 14:00 UTC) injects context from `hermes-deploy/scripts/fetch-dev-context.py`
+and runs the `dev-foundations` skill; Hermes-specific delivery mechanics live in
+`skills/dev-foundations/references/platform-hermes.md`.
+
+## 12. dev-foundations skill
+
+- **Purpose:** weekly CS Review & Trajectory Coach — map the week's real
+  sessions to CS fundamentals, state the gap to senior-engineer depth, assign
+  **exactly 3** study targets anchored to the user's own code, and close a
+  feedback loop week over week.
+- **Workflow contract** (SKILL.md): Gather (injected SCRIPT OUTPUT is the sole
+  source when present; else run the sibling specstory `digest.mjs --week --json`)
+  → Map (`references/foundations-map.md`) → Gaps (senior expectations + last
+  week's feedback) → Select 3 (`references/heuristics.md`: evidence-required,
+  1 strength + 2 gaps, no repeats within 3 weeks, one artifact each, 2–4h total)
+  → Feedback loop (acknowledge last week honestly, never invent history; ask for
+  a reply) → Render (`references/output-template.md`; plus
+  `references/platform-hermes.md` on Hermes).
+- **Feedback-loop contract:** the weekly study-log note
+  (`CS Foundations - YYYY-MM-DD.md`) is machine-parsed — each `## Target N:`
+  section's first list line is its `- [ ] Studied` checkbox; `## Feedback` holds
+  exactly three checkboxes (`Too easy` / `Too hard` / `More like this`) plus a
+  trailing `Notes:` free-text block. Renaming headings or reordering checkboxes
+  breaks the parser (see output-template.md §B).
+- **Scripts:** none — the skill is prompt + references only; data collection is
+  the platform's job (portable by construction).
+- **Non-goals:** quizzes, spaced repetition, LeetCode matching, real-time
+  analysis.
