@@ -20,7 +20,7 @@ level, bold sparingly. Total length ~40 lines max.
 
 🧭 Your Week in Code
 - <language/stack> — <N> sessions, ~<hours>h (<repo names>)
-- Patterns surfaced: <pattern1>, <pattern2>, <pattern3>
+- Patterns surfaced: <2–4 patterns>
 
 🎯 Target 1 — <Concept> (sharpen a strength)
 Where: <file/commit/session from this week>
@@ -43,9 +43,15 @@ whatever. I fold it into next week.
 Rules:
 - Exactly 3 targets, labeled with their role from heuristics rule 3.
 - Every "Where:" must name a real file/commit/session; no placeholders.
+- "Week of <Mon DD>" = the Monday of the week the digest window *ends* in (the
+  window itself is a rolling 7 days).
+- Sessions/hours in 🧭 are **recomputed** from non-idle, deduped, non-empty
+  sessions (SKILL.md step 1) — never the digest's raw `totals`.
 - Only include links you are confident exist (official docs, well-known
   books/papers). Otherwise describe the artifact ("SQLite EXPLAIN QUERY PLAN
   docs") without a URL.
+- Omit the `📝 Study log:` line when no note was created (e.g. interactive
+  runs on platforms without a note location).
 - The closing reply-ask is mandatory. The "🪞 Last Week" section is mandatory —
   first-week phrasing when no log exists; never invent history.
 
