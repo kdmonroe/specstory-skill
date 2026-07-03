@@ -1,43 +1,8 @@
-const API_URL = "https://cloud.specstory.com/api/v1/graphql";
+// Shared, backend-agnostic helpers: arg parsing, date/duration formatting, path utils.
+// No I/O beyond os.homedir(). Node >=18 built-ins only.
 
-export async function gql(query, variables = {}) {
-  const apiKey = (process.env.SPECSTORY_API_KEY ?? "").trim();
-  if (!apiKey) {
-    console.error("Missing SPECSTORY_API_KEY");
-    process.exit(1);
-  }
-
-  const resp = await fetch(API_URL, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${apiKey}`,
-    },
-    body: JSON.stringify({ query, variables }),
-  });
-
-  if (resp.status === 429) {
-    const retryAfter = Number(resp.headers.get("Retry-After") || "5");
-    console.error(`Rate limited. Retrying in ${retryAfter}s...`);
-    await new Promise((r) => setTimeout(r, retryAfter * 1000));
-    return gql(query, variables);
-  }
-
-  if (!resp.ok) {
-    const text = await resp.text().catch(() => "");
-    throw new Error(`SpecStory API error (${resp.status}): ${text}`);
-  }
-
-  const data = await resp.json();
-
-  if (data.errors?.length) {
-    throw new Error(
-      `GraphQL errors: ${data.errors.map((e) => e.message).join(", ")}`,
-    );
-  }
-
-  return data.data;
-}
+import os from "node:os";
+import path from "node:path";
 
 export function parseArgs(argv, flags = {}) {
   const args = argv.slice(2);
@@ -78,15 +43,34 @@ export function parseArgs(argv, flags = {}) {
 export function formatDate(dateStr) {
   if (!dateStr) return "—";
   const d = new Date(dateStr);
+  if (isNaN(d)) return "—";
   return d.toISOString().slice(0, 16).replace("T", " ");
 }
 
 export function formatDuration(startedAt, endedAt) {
   if (!startedAt || !endedAt) return "—";
   const ms = new Date(endedAt) - new Date(startedAt);
+  if (isNaN(ms) || ms < 0) return "—";
   const mins = Math.round(ms / 60000);
   if (mins < 60) return `${mins}min`;
   const h = Math.floor(mins / 60);
   const m = mins % 60;
   return m > 0 ? `${h}h${m}m` : `${h}h`;
+}
+
+// Sessions left open and idle in a terminal agent inflate endedAt far past the
+// last real activity. Flag spans longer than this so digests/recaps can warn.
+export const IDLE_SESSION_HOURS = 12;
+
+export function isLikelyIdle(startedAt, endedAt) {
+  if (!startedAt || !endedAt) return false;
+  const hrs = (new Date(endedAt) - new Date(startedAt)) / 3_600_000;
+  return hrs > IDLE_SESSION_HOURS;
+}
+
+export function expandHome(p) {
+  if (!p) return p;
+  if (p === "~") return os.homedir();
+  if (p.startsWith("~/")) return path.join(os.homedir(), p.slice(2));
+  return p;
 }

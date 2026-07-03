@@ -1,0 +1,13 @@
+specstory-skill
+Copyright 2026 kdmonroe
+
+This product includes software developed by kdmonroe.
+
+Licensed under the Apache License, Version 2.0. See LICENSE for terms.
+
+This skill interoperates with SpecStory (https://specstory.com) and its
+local .specstory/history format and Cloud GraphQL API. "SpecStory" is a
+trademark of its respective owner; this project is community-built and not
+affiliated with or endorsed by SpecStory. The structured-recap parser in
+skills/specstory/scripts/lib/recap.mjs originated in the author's
+hermes-deploy project and is relicensed here under Apache-2.0.
