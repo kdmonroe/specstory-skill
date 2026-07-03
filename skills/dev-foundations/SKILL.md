@@ -43,18 +43,27 @@ Follow these six steps in order.
   the week's session digest, GitHub activity, and — when available — a
   `[Last Week's Study Log]` block with completion state and feedback.
 - **Otherwise**: run the sibling specstory skill's digest yourself. Both skills
-  install side by side, so from this skill's directory:
+  install side by side — resolve the path from **this skill's own directory**
+  (shells often reset cwd between commands, so don't rely on a relative path
+  from wherever you happen to be):
 
   ```bash
-  node ../specstory/scripts/digest.mjs --week --json
+  node <this-skill-dir>/../specstory/scripts/digest.mjs --week --json --root <workspace>
   ```
 
-  Add `--cloud` when there is no local `.specstory/history` (e.g. containers),
-  and `--root <dir>` to sweep every repo under a workspace. The JSON gives you
-  per-repo sessions with structured recaps: stack (languages, signals), activity
-  (tool counts, files touched), intent, and outcome.
-- Ignore sessions flagged `likelyIdle: true` — a 14-hour "session" is an open
-  laptop lid, not signal.
+  Add `--cloud` when there is no local `.specstory/history` (e.g. containers).
+  Without `--root`, the digest only walks up from the cwd to the nearest
+  `.specstory/history`; pass `--root <dir>` (e.g. the user's code workspace) to
+  sweep every repo. The JSON gives you per-repo sessions with structured
+  recaps: stack (languages, signals), activity (tool counts, files touched),
+  intent, and outcome.
+- **Clean the data before reasoning about it.** Sessions flagged
+  `likelyIdle: true` have inflated wall-clock time (an open laptop lid), but
+  their *content* is real — discount their duration to zero, keep their
+  activity/files/intent as evidence. Drop empty stubs (zero-minute sessions
+  with null recaps) and dedupe by `sessionId` (the same session can appear
+  under two projects). Recompute session counts and hours from what survives —
+  never quote the digest's `totals` verbatim.
 
 ### 2. Map
 
@@ -97,7 +106,10 @@ Render the briefing per
 template plus the study-log note template). On Hermes, additionally follow
 [references/platform-hermes.md](references/platform-hermes.md): create the
 weekly study-log vault note via the GitHub Contents API, include its URL in the
-briefing, and save the one-line memory entry.
+briefing, and save the one-line memory entry. On platforms with no documented
+note location, render the study-log note inline after the briefing so the user
+can save it wherever they keep notes — next week's repeat-avoidance then relies
+on your memory of prior topics (or the user pointing you at their saved notes).
 
 ## Non-goals
 
