@@ -1,15 +1,23 @@
 # specstory-skill
 
-A portable **[Agent Skill](https://agentskills.io)** for querying your AI coding
-session history. **Local-first** — it parses `.specstory/history` markdown directly,
-so it works with **zero configuration and no API key** — with an optional
-**`--cloud`** layer that hits the [SpecStory Cloud](https://specstory.com) GraphQL
-API for cross-machine reach.
+Portable **[Agent Skills](https://agentskills.io)** built on your AI coding
+session history:
+
+- **`specstory`** — query your history. **Local-first** — it parses
+  `.specstory/history` markdown directly, so it works with **zero configuration
+  and no API key** — with an optional **`--cloud`** layer that hits the
+  [SpecStory Cloud](https://specstory.com) GraphQL API for cross-machine reach.
+- **`dev-foundations`** — a weekly **CS Review & Trajectory Coach**. Maps the
+  code you actually wrote this week to the computer-science fundamentals
+  underneath it, benchmarks against senior-engineer depth, and assigns exactly
+  3 study targets — with a week-over-week feedback loop. Designed for coaching
+  crons (e.g. Hermes) but works interactively too: ask *"give me my weekly CS
+  review"*.
 
 Works with any tool [SpecStory](https://specstory.com) captures: Claude Code,
 Cursor, Codex CLI, Gemini CLI, Droid, GitHub Copilot, and more.
 
-## What it does
+## What the specstory skill does
 
 | Command | Purpose |
 |---------|---------|
@@ -33,9 +41,10 @@ force a backend, and `--root <dir>` to scan many repos at once.
 /plugin install specstory
 ```
 
-Commands surface as `/specstory:recap`, `/specstory:digest`, etc.
+Commands surface as `/specstory:recap`, `/specstory:digest`, etc. The plugin
+includes **both** skills.
 
-### As a standalone skill (Claude Code / Cursor / Codex — cross-tool)
+### As standalone skills (Claude Code / Cursor / Codex — cross-tool)
 
 ```bash
 # via the Agent Skills CLI (auto-detects + symlinks into your tools)
@@ -44,12 +53,15 @@ npx skills add kdmonroe/specstory-skill
 # or manually
 git clone https://github.com/kdmonroe/specstory-skill.git
 cp -r specstory-skill/skills/specstory ~/.claude/skills/specstory
+cp -r specstory-skill/skills/dev-foundations ~/.claude/skills/dev-foundations
 ```
 
-### For OpenClaw / Hermes
+### For Hermes / OpenClaw
 
-Copy `skills/specstory` into your agent's skills directory. Runtime hints live in
-the namespaced `metadata.openclaw` / `metadata.hermes` SKILL.md fields.
+Copy `skills/specstory` (and `skills/dev-foundations` for the weekly coaching
+cron) into your agent's skills directory. Runtime hints live in the namespaced
+`metadata.openclaw` / `metadata.hermes` SKILL.md fields; Hermes cron mechanics
+are documented in `skills/dev-foundations/references/platform-hermes.md`.
 
 ## Usage
 
@@ -87,7 +99,8 @@ often works without a permanent key.
 
 ## Documentation
 
-- [skills/specstory/SKILL.md](skills/specstory/SKILL.md) — the skill definition + command reference.
+- [skills/specstory/SKILL.md](skills/specstory/SKILL.md) — the specstory skill definition + command reference.
+- [skills/dev-foundations/SKILL.md](skills/dev-foundations/SKILL.md) — the weekly CS-coaching skill (workflow, foundations map, heuristics, templates).
 - [specs.md](specs.md) — full specification (data model, backends, behavior).
 - [skills/specstory/references/ARCHITECTURE.md](skills/specstory/references/ARCHITECTURE.md) — how every file fits together.
 - [skills/specstory/references/cloud-api.md](skills/specstory/references/cloud-api.md) — SpecStory Cloud GraphQL reference.

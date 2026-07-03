@@ -2,15 +2,15 @@
   "name": "specstory-marketplace",
   "owner": { "name": "kdmonroe", "url": "https://github.com/kdmonroe" },
   "metadata": {
-    "description": "SpecStory session-history skill for Claude Code.",
-    "version": "3.0.0"
+    "description": "SpecStory session-history + dev-foundations coaching skills for Claude Code.",
+    "version": "3.1.0"
   },
   "plugins": [
     {
       "name": "specstory",
       "source": "./",
-      "description": "Search, browse, digest, and recap AI coding sessions. Local-first on .specstory/history; optional SpecStory Cloud.",
-      "version": "3.0.0",
+      "description": "Search, browse, digest, and recap AI coding sessions (specstory skill) + weekly CS-foundations coaching from your real code (dev-foundations skill). Local-first on .specstory/history; optional SpecStory Cloud.",
+      "version": "3.1.0",
       "license": "Apache-2.0",
       "category": "productivity"
     }

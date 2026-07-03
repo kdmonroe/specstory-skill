@@ -1,7 +1,7 @@
 {
   "name": "specstory",
-  "description": "Search, browse, digest, and recap your AI coding sessions (Claude Code, Cursor, Codex, …). Local-first on .specstory/history; optional SpecStory Cloud.",
-  "version": "3.0.0",
+  "description": "Search, browse, digest, and recap your AI coding sessions (Claude Code, Cursor, Codex, …) + weekly CS-foundations coaching from your real code. Local-first on .specstory/history; optional SpecStory Cloud.",
+  "version": "3.1.0",
   "author": { "name": "kdmonroe" },
   "homepage": "https://github.com/kdmonroe/specstory-skill",
   "repository": "https://github.com/kdmonroe/specstory-skill",
